@@ -1,0 +1,47 @@
+# --- General ---
+# Ignore OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore IDE-specific folders
+.vscode/
+.idea/
+
+# --- Python / Backend ---
+
+# Ignore the virtual environment folder
+backend/venv/
+
+# Ignore Python cache files
+**/__pycache__/
+*.py[cod]
+
+# Ignore the generated contract info file in the backend
+backend/contract-info.json
+
+# --- Node.js / Frontend ---
+
+# Ignore the node_modules folder for the frontend
+frontend/node_modules/
+
+# Ignore the production build folder for the frontend
+frontend/build/
+
+# Ignore the generated contract info file in the frontend
+frontend/src/contract-info.json
+
+# Ignore npm debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Secrets ---
+
+# CRITICAL: Ignore the .env file which contains secret keys and API keys.
+# The .env.example file, which is a template, SHOULD be committed.
+.env
