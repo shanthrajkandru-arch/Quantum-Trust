@@ -156,5 +156,5 @@ This successful prototype is the foundation for a fully decentralized, productio
 - **Transition to Real Quantum Hardware**: Replace the **Qiskit** simulator with a connection to real quantum processors (e.g., via **IBM Quantum**) and integrate high-speed physical **QRNGs**. This will provide true, physically sourced non-determinism and higher throughput.
 - **Deploy on Layer-2s & Decentralize**: Deploy the smart contract on **Layer-2 rollups** like **Optimism** or **Arbitrum**. Evolve the backend from a single server into a decentralized oracle network to eliminate any single point of failure.
 - **Implement Future-Proof Security**: Incorporate **Post-Quantum Cryptography (PQC)** for all classical cryptographic functions and implement **Zero-Knowledge Proofs (ZKPs)** to enable private verification of randomness.
-```
+
 
