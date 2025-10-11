@@ -1,4 +1,4 @@
-```markdown
+
 # QuantumTrust: A Verifiable Quantum Randomness Oracle
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python) ![React](https://img.shields.io/badge/React-18-blue?logo=react) ![Solidity](https://img.shields.io/badge/Solidity-0.8.19-lightgrey?logo=solidity)
@@ -157,3 +157,4 @@ This successful prototype is the foundation for a fully decentralized, productio
 - **Deploy on Layer-2s & Decentralize**: Deploy the smart contract on **Layer-2 rollups** like **Optimism** or **Arbitrum**. Evolve the backend from a single server into a decentralized oracle network to eliminate any single point of failure.
 - **Implement Future-Proof Security**: Incorporate **Post-Quantum Cryptography (PQC)** for all classical cryptographic functions and implement **Zero-Knowledge Proofs (ZKPs)** to enable private verification of randomness.
 ```
+
