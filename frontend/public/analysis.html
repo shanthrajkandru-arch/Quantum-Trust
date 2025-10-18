@@ -14,7 +14,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        /* --- Base Theme (from your styles.css) --- */
+        /* =====================================
+           Base Theme Variables
+           ===================================== */
         :root {
             --primary-bg: #1a1a2e;
             --secondary-bg: #16213e;
@@ -33,6 +35,10 @@
             --color-magenta: #ff00f5;
             --color-yellow: #fce803;
         }
+
+        /* =====================================
+           Base Styles
+           ===================================== */
         body {
             margin: 0;
             font-family: var(--font-main);
@@ -40,12 +46,15 @@
             color: var(--text-primary);
             line-height: 1.6;
         }
+
         .App {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             text-align: center;
         }
+
+        /* Header */
         .header {
             background-color: var(--secondary-bg);
             padding: 1.5rem 2rem;
@@ -59,6 +68,8 @@
             color: var(--primary-accent);
             font-weight: 700;
         }
+
+        /* Main Content Area */
         .main-content {
             flex-grow: 1;
             padding: 2rem 1rem;
@@ -67,6 +78,8 @@
             align-items: center;
             gap: 2rem;
         }
+
+        /* Card Component */
         .card {
             background-color: var(--card-bg);
             padding: 2rem;
@@ -85,6 +98,8 @@
             border-bottom: 2px solid var(--primary-accent);
             padding-bottom: 0.5rem;
         }
+
+        /* Button Styles */
         .button {
             background: linear-gradient(90deg, var(--primary-accent) 0%, var(--secondary-accent) 100%);
             color: var(--text-primary);
@@ -103,15 +118,28 @@
         }
         .button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4); }
         .button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .spinner { border: 4px solid rgba(255, 255, 255, 0.2); border-left-color: var(--primary-accent); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; margin-left: 10px; }
+
+        /* Spinner Animation */
+        .spinner { 
+            border: 4px solid rgba(255, 255, 255, 0.2); 
+            border-left-color: var(--primary-accent); 
+            border-radius: 50%; 
+            width: 20px; 
+            height: 20px; 
+            animation: spin 1s linear infinite; 
+            display: inline-block; 
+            margin-left: 10px; 
+        }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- New Dashboard Styles --- */
-        .live-console { display: none; }
+        /* =====================================
+           Dashboard & Live Console
+           ===================================== */
+        .live-console { display: none; } /* hidden until analysis starts */
         .live-console h3 {
             font-family: var(--font-mono);
             font-size: 1.5rem;
-            color: var(--text-primary); /* Pure white */
+            color: var(--text-primary);
             height: 3rem;
             display: flex;
             align-items: center;
@@ -122,10 +150,36 @@
             animation: dots 1.4s linear infinite;
         }
         @keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60%, 100% { content: '...'; } }
-        
-        .tumbler-container { display: flex; flex-wrap: wrap; gap: 5px; padding: 1rem; background-color: var(--secondary-bg); border-radius: var(--border-radius); margin-top: 1.5rem; min-height: 50px; align-items: center; justify-content: center; }
-        .tumbler-digit { width: 20px; height: 35px; background-color: var(--primary-bg); border: 1px solid var(--secondary-accent); border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-primary); }
-        
+
+        /* Tumbler Animation for Bits */
+        .tumbler-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 5px; 
+            padding: 1rem; 
+            background-color: var(--secondary-bg); 
+            border-radius: var(--border-radius); 
+            margin-top: 1.5rem; 
+            min-height: 50px; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .tumbler-digit { 
+            width: 20px; 
+            height: 35px; 
+            background-color: var(--primary-bg); 
+            border: 1px solid var(--secondary-accent); 
+            border-radius: 4px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            font-family: var(--font-mono); 
+            color: var(--text-primary); 
+        }
+
+        /* Results Section */
         #results-dashboard { display: none; }
         .results-grid { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
         .test-card { background-color: var(--secondary-bg); padding: 1.5rem; border-radius: var(--border-radius); border-left: 5px solid var(--secondary-accent); }
@@ -138,6 +192,7 @@
         .download-section { display: none; margin-top: 1rem; text-align: center; }
         .download-button { background-color: #2d3748; }
 
+        /* Table for non-chart tests */
         #results-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
         #results-table th, #results-table td { border: 1px solid var(--secondary-accent); padding: 0.75rem; text-align: left; }
         #results-table th { background-color: var(--secondary-bg); }
@@ -148,20 +203,25 @@
 </head>
 <body>
     <div class="App">
+        <!-- Header Section -->
         <header class="header"><h1>QuantumTrust Randomness Analysis</h1></header>
 
+        <!-- Main Dashboard -->
         <main class="main-content">
+            <!-- Analysis Start Card -->
             <div class="card">
                 <h2>QuantumTrust Analysis Engine</h2>
                 <p>This tool performs a comprehensive, live analysis of our quantum random number generator. It generates a 50,000+ bit sequence and subjects it to a suite of NIST-based statistical tests to validate its cryptographic strength.</p>
                 <button class="button" id="analyze-button"><span id="button-text">🔬 Generate & Run Full Analysis</span></button>
             </div>
 
+            <!-- Live Console / Animation -->
             <div class="card live-console" id="live-console">
                 <h3 id="status-heading">&nbsp;</h3>
                 <div class="tumbler-container" id="tumbler-container"></div>
             </div>
             
+            <!-- Results Dashboard -->
             <div class="card" id="results-dashboard">
                 <h2>Analysis Results</h2>
                 <div class="download-section" id="download-section">
@@ -169,18 +229,20 @@
                     <button class="button download-button" id="download-button">💾 Download bitstring.txt</button>
                 </div>
                 <div class="results-grid" id="results-grid"></div>
-
                 <div id="results-table-container" style="margin-top: 2rem;"></div>
             </div>
         </main>
     </div>
 
+    <!-- =====================================
+         SCRIPT LOGIC: Fetch, Animate, Render Charts
+         ===================================== -->
     <script>
-        // --- CONFIG ---
+        // Configuration & constants
         const API_BASE_URL = 'http://127.0.0.1:5000';
         const BITS_FOR_ANIMATION = 32;
 
-        // --- DOM ELEMENTS ---
+        // DOM elements
         const analyzeButton = document.getElementById('analyze-button');
         const buttonText = document.getElementById('button-text');
         const liveConsole = document.getElementById('live-console');
@@ -191,11 +253,11 @@
         const resultsTableContainer = document.getElementById('results-table-container');
         const downloadSection = document.getElementById('download-section');
         const downloadButton = document.getElementById('download-button');
-        
+
         let tumblerInterval;
         let fullBitstringForDownload = "";
 
-        // --- THEME COLOR LOADER ---
+        // Load theme colors from CSS variables
         const rootStyles = getComputedStyle(document.documentElement);
         const THEME_COLORS = {
             cyan: rootStyles.getPropertyValue('--color-cyan').trim(),
@@ -209,7 +271,7 @@
             gridColor: 'rgba(255, 255, 255, 0.1)'
         };
 
-        // --- ANIMATION LOGIC ---
+        // Show status text with optional animated dots
         function updateStatusHeading(text, showDots = false) {
             statusHeading.innerHTML = `<span>${text}</span>`;
             if (showDots) {
@@ -219,6 +281,7 @@
             }
         }
 
+        // Animate the "tumbler" bit display
         function startTumblerAnimation() {
             liveConsole.style.display = 'block';
             tumblerContainer.innerHTML = '';
@@ -230,15 +293,12 @@
             }
             const digits = tumblerContainer.childNodes;
             tumblerInterval = setInterval(() => {
-                digits.forEach(digit => {
-                    digit.textContent = Math.random() > 0.5 ? '1' : '0';
-                });
+                digits.forEach(digit => digit.textContent = Math.random() > 0.5 ? '1' : '0');
             }, 75);
         }
 
-        // --- MAIN WORKFLOW ---
+        // Handle Analyze Button click
         analyzeButton.addEventListener('click', async () => {
-            // 1. Reset UI
             analyzeButton.disabled = true;
             buttonText.innerHTML = 'Analyzing... <span class="spinner"></span>';
             resultsDashboard.style.display = 'none';
@@ -246,15 +306,11 @@
             resultsTableContainer.innerHTML = '';
             liveConsole.style.display = 'block';
 
-            // 2. Start Live Console Animations
             startTumblerAnimation();
             updateStatusHeading("Generating 50,000+ quantum bits", true);
-            setTimeout(() => {
-                updateStatusHeading("Running 7 NIST statistical tests", true);
-            }, 3000); 
-            
+            setTimeout(() => updateStatusHeading("Running 7 NIST statistical tests", true), 3000);
+
             try {
-                // 3. Fetch data from the backend
                 const response = await fetch(`${API_BASE_URL}/api/analyze-randomness`, { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -265,26 +321,22 @@
                     throw new Error(errorData.error || 'Backend request failed.');
                 }
                 const data = await response.json();
-                
-                // 4. Hide console and display results
-                liveConsole.style.display = 'none'; 
+                liveConsole.style.display = 'none';
                 fullBitstringForDownload = data.fullBitstring;
                 displayDashboard(data.proof);
 
             } catch (error) {
                 console.error("Analysis failed:", error);
-                const digits = tumblerContainer.childNodes;
                 clearInterval(tumblerInterval);
-                for (let i = 0; i < digits.length; i++) { digits[i].textContent = 'E'; }
-                updateStatusHeading(`Error: ${error.message}`, false);
+                tumblerContainer.childNodes.forEach(d => d.textContent = 'E');
+                updateStatusHeading(`Error: ${error.message}`);
             } finally {
-                // 5. Re-enable button
                 analyzeButton.disabled = false;
                 buttonText.textContent = '🔬 Generate & Run Full Analysis';
             }
         });
 
-        // --- DOWNLOAD HANDLER ---
+        // Handle Download Button
         downloadButton.addEventListener('click', () => {
             const blob = new Blob([fullBitstringForDownload], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
@@ -297,22 +349,21 @@
             URL.revokeObjectURL(url);
         });
 
-        // --- DASHBOARD RENDERING ---
+        // Display Dashboard with charts and tables
         function displayDashboard(proof) {
             resultsDashboard.style.display = 'block';
             downloadSection.style.display = 'block';
 
             const testDescriptions = {
-                "Frequency (Monobit) Test": "This is the most basic test, checking if the number of 0s and 1s are roughly equal. A perfect generator should produce a result very close to a 50/50 split, indicating no simple bias in the sequence.",
-                "Runs Test": "This test checks for 'clumping' by counting uninterrupted streaks of identical bits (runs). Too few or too many runs is an indication of poor randomness and suggests a lack of independence between bits.",
-                "Longest Run of Ones": "This test scans for statistically improbable, long streaks of consecutive 1s within blocks of data. Finding such a streak is a major red flag that the generator can get 'stuck' on a single value.",
-                "Serial (m=2) Test": "This test checks for short-range patterns by counting the frequency of all possible 2-bit overlapping patterns: 00, 01, 10, and 11. For true randomness, all four patterns should occur with roughly equal probability.",
-                "Cumulative Sums Test": "This test treats the bitstream as a 'random walk' (where '1' is +1 and '0' is -1). It checks to ensure the walk doesn't drift too far from the origin, which would indicate a long-term bias in the sequence.",
-                "Approximate Entropy": "This sophisticated test measures the 'unpredictability' between consecutive blocks of bits. It compares the frequency of all possible patterns of a given length to ensure the sequence is complex and non-repetitive.",
-                "FFT (Spectral) Test": "This powerful test uses a Fast Fourier Transform to analyze the bitstream in the frequency domain. It is exceptionally good at detecting hidden periodic (repeating) patterns that other tests might miss."
+                "Frequency (Monobit) Test": "This is the most basic test, checking if the number of 0s and 1s are roughly equal...",
+                "Runs Test": "This test checks for 'clumping' by counting uninterrupted streaks of identical bits...",
+                "Longest Run of Ones": "Scans for statistically improbable long streaks of consecutive 1s...",
+                "Serial (m=2) Test": "Checks for short-range patterns by counting frequency of 2-bit overlapping patterns...",
+                "Cumulative Sums Test": "Treats the bitstream as a 'random walk', ensuring no long-term bias...",
+                "Approximate Entropy": "Measures unpredictability between consecutive blocks of bits...",
+                "FFT (Spectral) Test": "Uses FFT to detect hidden repeating patterns in the frequency domain..."
             };
 
-            // --- MODIFIED: Explicitly define which tests have charts ---
             const visualTestNames = [
                 "Frequency (Monobit) Test",
                 "Serial (m=2) Test",
@@ -323,13 +374,13 @@
             const visualTests = proof.nistResults.filter(t => visualTestNames.includes(t.test_name));
             const tableTests = proof.nistResults.filter(t => !visualTestNames.includes(t.test_name));
 
+            // Render visual tests
             visualTests.forEach(test => {
                 const card = document.createElement('div');
                 card.className = 'test-card';
                 const verdictClass = test.passed ? 'pass' : 'fail';
                 const verdictText = test.passed ? 'PASS' : 'FAIL';
                 const testNameClean = test.test_name.replace(/\s+/g, '');
-
                 card.innerHTML = `
                     <h4>${test.test_name}</h4>
                     <p>${testDescriptions[test.test_name]}</p>
@@ -343,122 +394,51 @@
                 renderChartForTest(test, testNameClean);
             });
 
-// --- AFTER ---
+            // Render table for non-visual tests
             if (tableTests.length > 0) {
-                let tableHTML = `
-                    <div class="test-card">
-                        <h4>Additional Statistical Tests</h4>
-                        <table id="results-table">
-                            <thead><tr><th>Test Name</th><th>Result</th><th>P-Value</th></tr></thead>
-                            <tbody>
-                `;
+                let tableHTML = `<div class="test-card"><h4>Additional Statistical Tests</h4>
+                    <table id="results-table"><thead><tr><th>Test Name</th><th>Result</th><th>P-Value</th></tr></thead><tbody>`;
                 tableTests.forEach(test => {
                     const verdictClass = test.passed ? 'pass-text' : 'fail-text';
                     const verdictText = test.passed ? 'PASS' : 'FAIL';
-                    tableHTML += `
-                        <tr>
-                            <td>${test.test_name}</td>
-                            <td class="${verdictClass}">${verdictText}</td>
-                            <td>${test.p_value.toFixed(6)}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="padding: 0.5rem 2rem; font-size: 0.9rem; color: var(--text-secondary); border-bottom: 2px solid var(--card-bg);">
-                                ${testDescriptions[test.test_name]}
-                            </td>
-                        </tr>
-                    `;
+                    tableHTML += `<tr><td>${test.test_name}</td><td class="${verdictClass}">${verdictText}</td><td>${test.p_value.toFixed(6)}</td></tr>
+                    <tr><td colspan="3" style="padding:0.5rem 2rem; font-size:0.9rem; color: var(--text-secondary); border-bottom:2px solid var(--card-bg);">${testDescriptions[test.test_name]}</td></tr>`;
                 });
                 tableHTML += `</tbody></table></div>`;
                 resultsTableContainer.innerHTML = tableHTML;
             }
         }
-        
+
+        // Render Chart.js chart for each visual test
         function renderChartForTest(test, testNameClean) {
             const ctx = document.getElementById(`chart-${testNameClean}`).getContext('2d');
             const data = test.visualization_data;
-            
             const chartOptions = {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                        labels: { color: THEME_COLORS.textSecondary }
-                    },
-                    tooltip: {
-                        titleColor: THEME_COLORS.textPrimary,
-                        bodyColor: THEME_COLORS.textSecondary,
-                        backgroundColor: THEME_COLORS.secondaryBg,
-                        borderColor: THEME_COLORS.secondaryAccent,
-                        borderWidth: 1
-                    }
-                },
-                scales: {
-                    y: { ticks: { color: THEME_COLORS.textSecondary }, grid: { color: THEME_COLORS.gridColor } },
-                    x: { ticks: { color: THEME_COLORS.textSecondary }, grid: { color: THEME_COLORS.gridColor } }
-                },
-                animation: false 
+                plugins: { legend: { display: false }, tooltip: { titleColor: THEME_COLORS.textPrimary, bodyColor: THEME_COLORS.textSecondary, backgroundColor: THEME_COLORS.secondaryBg, borderColor: THEME_COLORS.secondaryAccent, borderWidth: 1 } },
+                scales: { y: { ticks: { color: THEME_COLORS.textSecondary }, grid: { color: THEME_COLORS.gridColor } }, x: { ticks: { color: THEME_COLORS.textSecondary }, grid: { color: THEME_COLORS.gridColor } } },
+                animation: false
             };
-            
+
             switch (test.test_name) {
                 case "Frequency (Monobit) Test":
-                    new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                            labels: ['Zeros', 'Ones'],
-                            datasets: [{
-                                data: [data.zeros, data.ones],
-                                backgroundColor: [THEME_COLORS.cyan, THEME_COLORS.magenta],
-                                borderColor: THEME_COLORS.secondaryBg,
-                                borderWidth: 4
-                            }]
-                        },
-                        options: { ...chartOptions, plugins: { ...chartOptions.plugins, legend: { display: true } }}
-                    });
+                    new Chart(ctx, { type:'pie', data:{ labels:['Zeros','Ones'], datasets:[{ data:[data.zeros,data.ones], backgroundColor:[THEME_COLORS.cyan,THEME_COLORS.magenta], borderColor:THEME_COLORS.secondaryBg, borderWidth:4 }] }, options:{ ...chartOptions, plugins:{ ...chartOptions.plugins, legend:{ display:true }}}});
                     break;
                 case "Serial (m=2) Test":
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: Object.keys(data),
-                            datasets: [{ data: Object.values(data), backgroundColor: THEME_COLORS.cyan }]
-                        },
-                        options: chartOptions
-                    });
+                    new Chart(ctx, { type:'bar', data:{ labels:Object.keys(data), datasets:[{ data:Object.values(data), backgroundColor:THEME_COLORS.cyan }] }, options:chartOptions });
                     break;
                 case "Longest Run of Ones":
-                     new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: data.labels,
-                            datasets: [{ data: data.counts, backgroundColor: THEME_COLORS.yellow }]
-                        },
-                        options: chartOptions
-                    });
+                    new Chart(ctx, { type:'bar', data:{ labels:data.labels, datasets:[{ data:data.counts, backgroundColor:THEME_COLORS.yellow }] }, options:chartOptions });
                     break;
                 case "Cumulative Sums Test":
-                     new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: Array.from({length: data.sums.length}, (_, i) => i + 1),
-                            datasets: [{ data: data.sums, borderColor: THEME_COLORS.primaryAccent, borderWidth: 2, pointRadius: 0, tension: 0.1 }]
-                        },
-                        options: chartOptions
-                    });
+                    new Chart(ctx, { type:'line', data:{ labels:Array.from({length:data.sums.length},(_,i)=>i+1), datasets:[{ data:data.sums, borderColor:THEME_COLORS.primaryAccent, borderWidth:2, pointRadius:0, tension:0.1 }] }, options:chartOptions });
                     break;
                 case "FFT (Spectral) Test":
-                     new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: Array.from({length: data.moduli.length}, (_, i) => i + 1),
-                            datasets: [{ data: data.moduli, borderColor: THEME_COLORS.cyan, borderWidth: 1, pointRadius: 0 }]
-                        },
-                        options: chartOptions
-                    });
+                    new Chart(ctx, { type:'line', data:{ labels:Array.from({length:data.moduli.length},(_,i)=>i+1), datasets:[{ data:data.moduli, borderColor:THEME_COLORS.cyan, borderWidth:1, pointRadius:0 }] }, options:chartOptions });
                     break;
             }
         }
     </script>
 </body>
 </html>
-
